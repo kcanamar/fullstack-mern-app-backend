@@ -6,10 +6,23 @@ const { PORT, DATABASE_URL } = process.env
 const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
+const cors = require("cors")
+const morgan = require("morgan")
+////////////////////////
+// Models
+////////////////////////
+const PeopleSchema = new mongoose.Schema({
+    name: String,
+    image: String,
+    title: String,
+})
+const People = mongoose.model("People", PeopleSchema)
 //////////////////////
 // Declare Middleware
 //////////////////////
-
+app.use(cors())
+app.use(morgan("dev"))
+app.use(express.json())
 //////////////////////
 // Database Connection
 //////////////////////
@@ -24,6 +37,22 @@ mongoose.connection
 // INDUCES - Index, New, Delete, Update, Create, Edit, Show
 app.get("/", (req, res) => {
     res.send("hello world")
+})
+
+app.get("/people", async (req, res) => {
+    try {
+        res.json( await People.find({}))
+    } catch (error) {
+        res.status(400).json(error)
+    }
+})
+
+app.post("/people", async (req, res) => {
+    try {
+        res.json( await People.create(req.body))
+    } catch {
+        res.status(400).json(error)
+    }
 })
 ///////////////////////////
 // Server Listener
