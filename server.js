@@ -54,6 +54,23 @@ app.post("/people", async (req, res) => {
         res.status(400).json(error)
     }
 })
+
+app.delete("/people/:id", async (req, res) => {
+    try {
+        res.json( await People.findByIdAndDelete(req.params.id))
+    } catch (error) {
+        res.status(400).json(error)
+    }
+})
+
+app.put("/people/:id", async (req, res) => {
+    try {
+        console.log(`this is the req.param.id ---> ${req.params.id}`)
+        res.json( await People.findByIdAndUpdate(req.params.id, req.body, {new: true}))
+    } catch (error) {
+        res.status(400).json(error)
+    }
+})
 ///////////////////////////
 // Server Listener
 ///////////////////////////
