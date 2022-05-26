@@ -65,7 +65,6 @@ app.delete("/people/:id", async (req, res) => {
 
 app.put("/people/:id", async (req, res) => {
     try {
-        console.log(`this is the req.param.id ---> ${req.params.id}`)
         res.json( await People.findByIdAndUpdate(req.params.id, req.body, {new: true}))
     } catch (error) {
         res.status(400).json(error)
